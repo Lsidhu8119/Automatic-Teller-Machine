@@ -4,7 +4,7 @@ Author: Lovedeep Singh Sidhu
 Date: 06/10/2024
 """
 
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from bank_account.bank_account import BankAccount
 from patterns.strategy.management_fee_strategy import ManagementFeeStrategy
 
@@ -59,8 +59,12 @@ class InvestmentAccount(BankAccount):
     def __str__(self) -> str:
         """Provides a string representation of the InvestmentAccount."""
         
-        # Determine if management fee is applicable based on account age
-        if self._date_created <= self.TEN_YEARS_AGO:
+        # Ensure date comparison consistency
+        date_created = self._date_created
+        if isinstance(date_created, datetime):
+            date_created = date_created.date()
+            
+        if date_created <= self.TEN_YEARS_AGO:
             fee = "Waived"
         else:
             fee = f"${self.__management_fee:.2f}"
