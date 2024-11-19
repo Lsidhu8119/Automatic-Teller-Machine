@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QTableWidgetItem, QMessageBox
 from PySide6.QtCore import Slot
 from ui_superclasses.lookup_window import LookupWindow
 from user_interface.account_details_window import AccountDetailsWindow
-from user_interface.manage_data import load_data
+from user_interface.manage_data import load_data, update_data
 from bank_account.bank_account import BankAccount
 
 class ClientLookupWindow(LookupWindow):
@@ -46,7 +46,6 @@ class ClientLookupWindow(LookupWindow):
                 # Populate table cells with account information
                 self.account_table.setItem(row_position, 0, QTableWidgetItem(str(account.account_number)))
                 self.account_table.setItem(row_position, 1, QTableWidgetItem(f"${account.balance:,.2f}"))
-                # Ensure you are using a valid attribute for date_created or remove it
                 self.account_table.setItem(row_position, 2, QTableWidgetItem(str(account.date_created) if hasattr(account, 'date_created') else "N/A"))
                 self.account_table.setItem(row_position, 3, QTableWidgetItem(account.__class__.__name__))
 
@@ -70,4 +69,25 @@ class ClientLookupWindow(LookupWindow):
         # Open the Account Details window
         account = self.accounts[account_number]
         details_window = AccountDetailsWindow(account)
+
+        # Connect the balance_updated signal from AccountDetailsWindow to the update_data method
+        details_window.balance_updated.connect(self.update_data)
+
         details_window.exec_()
+
+    @Slot(BankAccount)
+    def update_data(self, account: BankAccount):
+        """Updates the account table and data after receiving the balance_updated signal."""
+        # Loop through the rows in the account_table
+        for row in range(self.account_table.rowCount()):
+            account_number_item = self.account_table.item(row, 0)
+            if account_number_item and int(account_number_item.text()) == account.account_number:
+                # Update the balance column with the new balance
+                self.account_table.setItem(row, 1, QTableWidgetItem(f"${account.balance:,.2f}"))
+
+                # Update the account in the dictionary
+                self.accounts[account.account_number] = account
+
+                # Update the data in the manage_data module
+                update_data(account)
+                break
