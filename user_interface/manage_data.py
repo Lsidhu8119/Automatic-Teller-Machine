@@ -1,3 +1,8 @@
+"""
+Description: This file defines functions to load and update data related to clients and their associated bank accounts.
+Author: Lovedeep Singh Sidhu
+"""
+
 import os
 import sys
 # THIS LINE IS NEEDED SO THAT THE GIVEN TESTING 

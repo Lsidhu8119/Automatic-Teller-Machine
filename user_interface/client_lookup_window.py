@@ -1,3 +1,9 @@
+ 
+"""
+Description: This class defines the ClientLookupWindow, a user interface for looking up clients and their associated bank accounts. 
+Author: Lovedeep Singh Sidhu
+"""
+
 from PySide6.QtWidgets import QTableWidgetItem, QMessageBox
 from PySide6.QtCore import Slot
 from ui_superclasses.lookup_window import LookupWindow

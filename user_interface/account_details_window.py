@@ -1,3 +1,8 @@
+"""
+Description: This class is responsible for displaying the details of a bank account and facilitating bank account transactions such as deposits and withdrawals.
+Author: Lovedeep Singh Sidhu
+"""
+
 from ui_superclasses.details_window import DetailsWindow
 from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import Signal
